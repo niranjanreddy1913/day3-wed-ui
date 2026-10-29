@@ -11,14 +11,37 @@ st.set_page_config(page_title="TR-MAIN dashboard", page_icon="📈", layout="wid
 st.title("📈 Campus substation — TR-MAIN (630 kVA) and rooftop solar (500 kWp)")
 
 
+
 def get(path, **params):
     try:
-        r = httpx.get(API + path, params=params, timeout=10)
-    except httpx.ConnectError:
-        st.error("The API is not running. Start it with:  uvicorn app:app --reload")
+        r = httpx.get(
+            f"{API}{path}",
+            params=params,
+            timeout=20,
+        )
+        r.raise_for_status()
+        return r.json()
+
+    except httpx.ConnectError as e:
+        st.error(f"Cannot connect to the deployed API: {API}")
+        st.code(repr(e))
         st.stop()
-    r.raise_for_status()
-    return r.json()
+
+    except httpx.TimeoutException as e:
+        st.error("The API request timed out.")
+        st.code(repr(e))
+        st.stop()
+
+    except httpx.HTTPStatusError as e:
+        st.error(f"API returned HTTP {e.response.status_code}")
+        st.code(e.response.text)
+        st.stop()
+
+    except httpx.HTTPError as e:
+        st.error("An HTTP error occurred while contacting the API.")
+        st.code(repr(e))
+        st.stop()
+
 
 
 day = st.date_input("Day", value=date(2026, 3, 23), min_value=date(2026, 2, 1), max_value=date(2026, 3, 31))
