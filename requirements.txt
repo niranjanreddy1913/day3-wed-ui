@@ -1,5 +1,5 @@
-streamlit
-httpx
 fastapi[standard]
 sqlalchemy
 pandas
+streamlit
+httpx
