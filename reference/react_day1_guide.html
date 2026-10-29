@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Day 1 — React Training Guide | Actoryx Technologies</title>
+  <style>
+    :root {
+      --navy: #1e3a5f;
+      --green: #1b6b3a;
+      --purple: #7b2d8b;
+      --orange: #f47c20;
+      --gray-bg: #f4f6f9;
+      --white: #ffffff;
+      --text: #1a202c;
+      --muted: #718096;
+      --border: #e2e8f0;
+      --code-bg: #1e1e2e;
+      --code-text: #cdd6f4;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--gray-bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    /* ── TOP NAV ── */
+    .topnav {
+      background: var(--navy);
+      color: white;
+      padding: 14px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    .topnav .brand { font-size: 1.1rem; font-weight: 700; letter-spacing: 0.5px; }
+    .topnav .brand span { color: var(--orange); }
+    .topnav .badge {
+      background: var(--orange);
+      color: white;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(135deg, var(--navy) 0%, #2a5298 100%);
+      color: white;
+      padding: 64px 40px;
+      text-align: center;
+    }
+    .hero .day-label {
+      display: inline-block;
+      background: var(--orange);
+      color: white;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 6px 18px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .hero h1 { font-size: 2.8rem; margin-bottom: 14px; }
+    .hero p { font-size: 1.15rem; opacity: 0.85; max-width: 600px; margin: 0 auto 32px; }
+    .hero .meta {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+    .hero .meta-item {
+      text-align: center;
+      background: rgba(255,255,255,0.1);
+      padding: 14px 24px;
+      border-radius: 10px;
+      min-width: 130px;
+    }
+    .hero .meta-item .num { font-size: 2rem; font-weight: 700; color: var(--orange); }
+    .hero .meta-item .lbl { font-size: 0.8rem; opacity: 0.75; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* ── LAYOUT ── */
+    .container { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── PREREQ BAR ── */
+    .prereq-bar {
+      background: #fff8e1;
+      border-left: 5px solid #f59e0b;
+      padding: 20px 28px;
+      margin: 40px 0;
+      border-radius: 0 8px 8px 0;
+    }
+    .prereq-bar h3 { color: #92400e; margin-bottom: 10px; font-size: 1rem; }
+    .prereq-bar ul { list-style: none; display: flex; flex-wrap: wrap; gap: 10px; }
+    .prereq-bar ul li {
+      background: white;
+      border: 1px solid #fcd34d;
+      border-radius: 6px;
+      padding: 4px 14px;
+      font-size: 0.9rem;
+      color: #78350f;
+      font-weight: 500;
+    }
+
+    /* ── OVERVIEW CARDS ── */
+    .overview-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin: 40px 0;
+    }
+    .overview-card {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      border-top: 4px solid var(--navy);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+    .overview-card.ws1 { border-top-color: var(--navy); }
+    .overview-card.ws2 { border-top-color: var(--green); }
+    .overview-card.ws3 { border-top-color: var(--purple); }
+    .overview-card .ws-num {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .overview-card h3 { font-size: 1.1rem; margin-bottom: 10px; }
+    .overview-card .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+    .overview-card .tag {
+      font-size: 0.75rem;
+      padding: 3px 10px;
+      border-radius: 12px;
+      background: var(--gray-bg);
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    /* ── SECTION HEADING ── */
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 56px 0 28px;
+    }
+    .section-heading .ws-badge {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: white;
+      flex-shrink: 0;
+    }
+    .ws-badge.ws1 { background: var(--navy); }
+    .ws-badge.ws2 { background: var(--green); }
+    .ws-badge.ws3 { background: var(--purple); }
+    .section-heading h2 { font-size: 1.8rem; }
+    .section-heading .subtitle { font-size: 0.9rem; color: var(--muted); margin-top: 2px; }
+
+    /* ── STEPS ── */
+    .steps { counter-reset: step; }
+    .step {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 32px;
+      counter-increment: step;
+    }
+    .step-num {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: white;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .step-num.navy { background: var(--navy); }
+    .step-num.green { background: var(--green); }
+    .step-num.purple { background: var(--purple); }
+    .step-body { flex: 1; }
+    .step-body h4 { font-size: 1.05rem; margin-bottom: 8px; }
+    .step-body p { color: #4a5568; margin-bottom: 10px; font-size: 0.95rem; }
+
+    /* ── CODE BLOCK ── */
+    .code-block {
+      background: var(--code-bg);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 10px 0 16px;
+      font-size: 0.88rem;
+    }
+    .code-header {
+      background: #313244;
+      padding: 8px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .code-header .dots span {
+      display: inline-block;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      margin-right: 4px;
+    }
+    .code-header .dots .r { background: #f38ba8; }
+    .code-header .dots .y { background: #f9e2af; }
+    .code-header .dots .g { background: #a6e3a1; }
+    .code-header .filename { color: #cdd6f4; font-size: 0.8rem; opacity: 0.7; }
+    pre {
+      padding: 20px;
+      overflow-x: auto;
+      color: var(--code-text);
+      line-height: 1.6;
+      font-family: 'Cascadia Code', 'Fira Code', 'Courier New', monospace;
+    }
+    .kw { color: #cba6f7; }
+    .fn { color: #89b4fa; }
+    .str { color: #a6e3a1; }
+    .cm { color: #6c7086; font-style: italic; }
+    .tag { color: #f38ba8; }
+    .attr { color: #fab387; }
+    .val { color: #a6e3a1; }
+
+    /* ── CONCEPT BOXES ── */
+    .concept-box {
+      background: #eef2ff;
+      border: 1px solid #c7d2fe;
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin: 12px 0;
+    }
+    .concept-box .label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #4338ca;
+      margin-bottom: 8px;
+    }
+    .concept-box p { color: #3730a3; font-size: 0.93rem; margin: 0; }
+
+    .warning-box {
+      background: #fff5f5;
+      border: 1px solid #fed7d7;
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin: 12px 0;
+    }
+    .warning-box .label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #c53030;
+      margin-bottom: 6px;
+    }
+    .warning-box p { color: #742a2a; font-size: 0.93rem; margin: 0; }
+
+    .tip-box {
+      background: #f0fff4;
+      border: 1px solid #c6f6d5;
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin: 12px 0;
+    }
+    .tip-box .label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #276749;
+      margin-bottom: 6px;
+    }
+    .tip-box p { color: #22543d; font-size: 0.93rem; margin: 0; }
+
+    /* ── SCREENSHOT ── */
+    .screenshot-wrap {
+      margin: 20px 0;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      border: 1px solid var(--border);
+    }
+    .screenshot-label {
+      background: #313244;
+      color: #cdd6f4;
+      padding: 8px 16px;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .screenshot-label::before {
+      content: '📸';
+    }
+    .screenshot-wrap img {
+      width: 100%;
+      display: block;
+    }
+
+    /* ── ASSIGNMENT ── */
+    .assignment {
+      background: linear-gradient(135deg, #fffbeb, #fef3c7);
+      border: 2px solid #f59e0b;
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin: 32px 0;
+    }
+    .assignment .label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #92400e;
+      margin-bottom: 12px;
+    }
+    .assignment h4 { font-size: 1.1rem; margin-bottom: 10px; color: #78350f; }
+    .assignment ul { margin-left: 20px; color: #78350f; font-size: 0.95rem; }
+    .assignment ul li { margin-bottom: 6px; }
+
+    /* ── CONCEPTS TABLE ── */
+    .concepts-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+    }
+    .concepts-table th {
+      background: var(--navy);
+      color: white;
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .concepts-table td {
+      padding: 11px 16px;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.92rem;
+    }
+    .concepts-table tr:last-child td { border-bottom: none; }
+    .concepts-table tr:nth-child(even) td { background: #f8fafc; }
+    code {
+      background: #eef2ff;
+      color: #4338ca;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-family: 'Cascadia Code', 'Fira Code', monospace;
+      font-size: 0.88em;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 40px 0;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--navy);
+      color: rgba(255,255,255,0.7);
+      text-align: center;
+      padding: 32px;
+      margin-top: 80px;
+      font-size: 0.9rem;
+    }
+    footer strong { color: white; }
+  </style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <div class="brand">ACTORYX <span>Technologies</span></div>
+  <div class="badge">React Intern Training</div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="day-label">Day 1 of 3</div>
+  <h1>React Fundamentals</h1>
+  <p>Components, JSX, Props, State & Forms — build 3 complete apps from scratch</p>
+  <div class="meta">
+    <div class="meta-item"><div class="num">3</div><div class="lbl">Workshops</div></div>
+    <div class="meta-item"><div class="num">~4h</div><div class="lbl">Duration</div></div>
+    <div class="meta-item"><div class="num">3</div><div class="lbl">Live Apps</div></div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- PREREQUISITES -->
+  <div class="prereq-bar">
+    <h3>✅ Prerequisites — verify before starting</h3>
+    <ul>
+      <li>Node.js v18+ → <code>node -v</code></li>
+      <li>npm v9+ → <code>npm -v</code></li>
+      <li>VS Code installed</li>
+      <li>Chrome browser</li>
+      <li>Git basics</li>
+    </ul>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="overview-grid">
+    <div class="overview-card ws1">
+      <div class="ws-num">Workshop 1</div>
+      <h3>Hello World App</h3>
+      <p style="font-size:0.88rem;color:var(--muted)">Project setup, JSX, Components, Props</p>
+      <div class="tags">
+        <span class="tag">JSX</span>
+        <span class="tag">Components</span>
+        <span class="tag">Props</span>
+        <span class="tag">Vite</span>
+      </div>
+    </div>
+    <div class="overview-card ws2">
+      <div class="ws-num">Workshop 2</div>
+      <h3>Full Name App</h3>
+      <p style="font-size:0.88rem;color:var(--muted)">useState hook, controlled inputs, events</p>
+      <div class="tags">
+        <span class="tag">useState</span>
+        <span class="tag">onChange</span>
+        <span class="tag">Forms</span>
+      </div>
+    </div>
+    <div class="overview-card ws3">
+      <div class="ws-num">Workshop 3</div>
+      <h3>Calculator App</h3>
+      <p style="font-size:0.88rem;color:var(--muted)">Validation, edge cases, conditional render</p>
+      <div class="tags">
+        <span class="tag">parseFloat</span>
+        <span class="tag">isNaN</span>
+        <span class="tag">Validation</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- WORKSHOP 1 -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="section-heading">
+    <div class="ws-badge ws1">W1</div>
+    <div>
+      <h2>Workshop 1 — Hello World App</h2>
+      <div class="subtitle">Understand project structure, JSX, Components, and Props</div>
+    </div>
+  </div>
+
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-num navy">1</div>
+      <div class="step-body">
+        <h4>Create the project with Vite</h4>
+        <p>Open your terminal and run these commands one by one. Vite creates a React project with near-instant hot reload — much faster than the old Create React App.</p>
+        <div class="code-block">
+          <div class="code-header"><div class="dots"><span class="r"></span><span class="y"></span><span class="g"></span></div><span class="filename">Terminal</span></div>
+          <pre>npm create vite@latest workshop1-hello-world -- --template react
+cd workshop1-hello-world
+npm install
+npm run dev</pre>
+        </div>
+        <div class="tip-box">
+          <div class="label">💡 Why Vite?</div>
+          <p>CRA (Create React App) uses Webpack and takes 30–60s to start. Vite uses native ES Modules — dev server starts in under 1 second.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num navy">2</div>
+      <div class="step-body">
+        <h4>Understand the folder structure</h4>
+        <p>After setup, your project looks like this. Every file has a specific purpose:</p>
+        <div class="code-block">
+          <div class="code-header"><div class="dots"><span class="r"></span><span class="y"></span><span class="g"></span></div><span class="filename">Project Structure</span></div>
+          <pre>workshop1-hello-world/
+├── src/
+│   ├── App.jsx          ← Root component (edit this)
+│   ├── App.css          ← Component styles
+│   ├── main.jsx         ← Entry point; mounts App into index.html
+│   └── components/      ← Your reusable components go here
+├── index.html           ← Shell HTML; React renders inside &lt;div id="root"&gt;
+├── vite.config.js       ← Vite configuration
+└── package.json         ← Dependencies and scripts</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num navy">3</div>
+      <div class="step-body">
+        <h4>Create your first component — <code>Greeting.jsx</code></h4>
+        <p>Inside <code>src/components/</code>, create <code>Greeting.jsx</code>. This component accepts a <code>name</code> prop and displays a welcome message.</p>
+        <div class="code-block">
+          <div class="code-header"><div class="dots"><span class="r"></span><span class="y"></span><span class="g"></span></div><span class="filename">src/components/Greeting.jsx</span></div>
+          <pre><span class="kw">function</span> <span class="fn">Greeting</span>({ name }) {
+  <span class="kw">return</span> <span class="tag">&lt;h2&gt;</span>Welcome, {name}! 👋<span class="tag">&lt;/h2&gt;</span>
+}
+
+<span class="kw">export default</span> Greeting</pre>
+        </div>
+        <div class="concept-box">
+          <div class="label">💡 Concept — Props</div>
+          <p>Props are data passed <strong>into</strong> a component from its parent. They are <strong>read-only</strong> — a child component can never modify its own props. Think of props like function arguments.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num navy">4</div>
+      <div class="step-body">
+        <h4>Create the assignment component — <code>ProfileCard.jsx</code></h4>
+        <p>Create <code>src/components/ProfileCard.jsx</code>. It accepts <code>name</code>, <code>role</code>, and <code>email</code> as props and renders a styled card.</p>
+        <div class="code-block">
+          <div class="code-header"><div class="dots"><span class="r"></span><span class="y"></span><span class="g"></span></div><span class="filename">src/components/ProfileCard.jsx</span></div>
+          <pre><span class="kw">function</span> <span class="fn">ProfileCard</span>({ name, role, email }) {
+  <span class="kw">return</span> (
+    <span class="tag">&lt;div</span> <span class="attr">className</span>=<span class="val">"profile-card"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">className</span>=<span class="val">"avatar"</span><span class="tag">&gt;</span>{name.charAt(0)}<span class="tag">&lt;/div&gt;</span>
+      <span class="tag">&lt;h3&gt;</span>{name}<span class="tag">&lt;/h3&gt;</span>
+      <span class="tag">&lt;p</span> <span class="attr">className</span>=<span class="val">"role"</span><span class="tag">&gt;</span>{role}<span class="tag">&lt;/p&gt;</span>
+      <span class="tag">&lt;p</span> <span class="attr">className</span>=<span class="val">"email"</span><span class="tag">&gt;</span>✉ {email}<span class="tag">&lt;/p&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+  )
+}
+
+<span class="kw">export default</span> ProfileCard</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num navy">5</div>
+      <div class="step-body">
+        <h4>Wire everything up in <code>App.jsx</code></h4>
+        <p>Update <code>src/App.jsx</code> to import and use both components. Notice how props are passed like HTML attributes.</p>
+        <div class="code-block">
+          <div class="code-header"><div class="dots"><span class="r"></span><span class="y"></span><span class="g"></span></div><span class="filename">src/App.jsx</span></div>
+          <pre><span class="kw">import</span> Greeting <span class="kw">from</span> <span class="str">'./components/Greeting'</span>
+<span class="kw">import</span> ProfileCard <span class="kw">from</span> <span class="str">'./components/ProfileCard'</span>
+<span class="kw">import</span> <span class="str">'./App.css'</span>
+
+<span class="kw">function</span> <span class="fn">App</span>() {
+  <span class="kw">return</span> (
+    <span class="tag">&lt;div</span> <span class="attr">className</span>=<span class="val">"app"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;header</span> <span class="attr">className</span>=<span class="val">"app-header"</span><span class="tag">&gt;</span>
+        <span class="tag">&lt;h1&gt;</span>Hello, World!<span class="tag">&lt;/h1&gt;</span>
+        <span class="tag">&lt;p&gt;</span>My first React component<span class="tag">&lt;/p&gt;</span>
+      <span class="tag">&lt;/header&gt;</span>
+
+      <span class="tag">&lt;Greeting</span> <span class="attr">name</span>=<span class="val">"Vijay"</span> <span class="tag">/&gt;</span>
+
+      <span class="tag">&lt;div</span> <span class="attr">className</span>=<span class="val">"card-grid"</span><span class="tag">&gt;</span>
+        <span class="tag">&lt;ProfileCard</span> <span class="attr">name</span>=<span class="val">"Ravi Kumar"</span>  <span class="attr">role</span>=<span class="val">"React Intern"</span>    <span class="attr">email</span>=<span class="val">"ravi@actoryx.com"</span>  <span class="tag">/&gt;</span>
+        <span class="tag">&lt;ProfileCard</span> <span class="attr">name</span>=<span class="val">"Priya Sharma"</span> <span class="attr">role</span>=<span class="val">"UI Intern"</span>       <span class="attr">email</span>=<span class="val">"priya@actoryx.com"</span> <span class="tag">/&gt;</span>
+        <span class="tag">&lt;ProfileCard</span> <span class="attr">name</span>=<span class="val">"Arun Patel"</span>   <span class="attr">role</span>=<span class="val">"Fullstack Intern"</span> <span class="attr">email</span>=<span class="val">"arun@actoryx.com"</span>  <span class="tag">/&gt;</span>
+      <span class="tag">&lt;/div&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+  )
+}
+
+<span class="kw">export default</span> App</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num navy">6</div>
+      <div class="step-body">
+        <h4>Run and see the result</h4>
+        <p>Your app running at <strong>http://localhost:5173</strong> should look like this:</p>
+        <div class="screenshot-wrap">
+          <div class="screenshot-label">Workshop 1 — Hello World App (live result)</div>
+          <img src="screenshots/ws1-hello-world.png" alt="Workshop 1 screenshot" />
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /steps -->
+
+  <!-- Key Concepts Table WS1 -->
+  <table class="concepts-table">
+    <thead><tr><th>Concept</th><th>What it means</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Component</strong></td><td>Reusable, self-contained UI building block</td><td><code>function ProfileCard() { ... }</code></td></tr>
+      <tr><td><strong>JSX</strong></td><td>HTML-like syntax that compiles to JavaScript</td><td><code>&lt;h1&gt;Hello&lt;/h1&gt;</code></td></tr>
+      <tr><td><strong>Props</strong></td><td>Read-only data passed from parent to child</td><td><code>&lt;Greeting name="Vijay" /&gt;</code></td></tr>
+      <tr><td><strong>export default</strong></td><td>Every component file must export its component</td><td><code>export default App</code></td></tr>
+      <tr><td><strong>Virtual DOM</strong></td><td>React's in-memory copy of the DOM — enables fast updates</td><td>React diffs changes, updates only what changed</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warning-box">
+    <div class="label">⚠️ Common Mistake</div>
+    <p>JSX rules: every tag must be closed (<code>&lt;br /&gt;</code> not <code>&lt;br&gt;</code>). Return only a single root element — wrap siblings with <code>&lt;div&gt;</code> or <code>&lt;&gt;...&lt;/&gt;</code> (React Fragment).</p>
+  </div>
+
+  <div class="assignment">
+    <div class="label">📝 Assignment — Workshop 1</div>
+    <h4>Create a ProfileCard with Props</h4>
+    <ul>
+      <li>Create a <code>ProfileCard</code> component that accepts <code>name</code>, <code>role</code>, and <code>email</code> as props</li>
+      <li>Display them in a styled card with an avatar circle showing the first letter of the name</li>
+      <li>Render 3 different ProfileCards in App.jsx with different data</li>
+    </ul>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- WORKSHOP 2 -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="section-heading">
+    <div class="ws-badge ws2">W2</div>
+    <div>
+      <h2>Workshop 2 — Full Name App</h2>
+      <div class="subtitle">Learn useState, controlled inputs, and two-way binding</div>
+    </div>
+  </div>
+
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-num green">1</div>
+      <div class="step-body">
+        <h4>Create the project</h4>
+        <div class="code-block">
+          <div class="code-header"><div class="dots"><span class="r"></span><span class="y"></span><span class="g"></span></div><span class="filename">Terminal</span></div>
+          <pre>npm create vite@latest workshop2-full-name -- --template react
+cd workshop2-full-name
+npm install
+npm run dev</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num green">2</div>
+      <div class="step-body">
+        <h4>Understand <code>useState</code></h4>
+        <p>State is data that <strong>changes over time</strong>. When state changes, React automatically re-renders the component to reflect the update.</p>
+        <div class="code-block">
+          <div class="code-header"><div class="dots"><span class="r"></span><span class="y"></span><span class="g"></span></div><span class="filename">useState syntax</span></div>
+          <pre><span class="kw">import</span> { useState } <span class="kw">from</span> <span class="str">'react'</span>
+
+<span class="cm">// Declares a state variable and its updater function</span>
+<span class="kw">const</span> [firstName, setFirstName] = <span class="fn">useState</span>(<span class="str">''</span>)
+<span class="cm">//     ↑ current value   ↑ function to update it   ↑ initial value</span></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num green">3</div>
+      <div class="step-body">
+        <h4>Create <code>FullNameApp.jsx</code> with controlled inputs</h4>
+        <p>Create <code>src/components/FullNameApp.jsx</code>. Each input is "controlled" — its value is driven by state, and every keystroke updates state via <code>onChange</code>.</p>
+        <div class="code-block">
+          <div class="code-header"><div class="dots"><span class="r"></span><span class="y"></span><span class="g"></span></div><span class="filename">src/components/FullNameApp.jsx</span></div>
+          <pre><span class="kw">import</span> { useState } <span class="kw">from</span> <span class="str">'react'</span>
+
+<span class="kw">function</span> <span class="fn">FullNameApp</span>() {
+  <span class="kw">const</span> [firstName,  setFirstName]  = <span class="fn">useState</span>(<span class="str">''</span>)
+  <span class="kw">const</span> [middleName, setMiddleName] = <span class="fn">useState</span>(<span class="str">''</span>)
+  <span class="kw">const</span> [lastName,   setLastName]   = <span class="fn">useState</span>(<span class="str">''</span>)
+  <span class="kw">const</span> [submitted,  setSubmitted]  = <span class="fn">useState</span>(<span class="kw">false</span>)
+
+  <span class="kw">const</span> fullName = [firstName, middleName, lastName]
+    .filter(Boolean).join(<span class="str">' '</span>)
+
+  <span class="kw">const</span> initials = [firstName, middleName, lastName]
+    .filter(Boolean).map(n => n[0].toUpperCase() + <span class="str">'.'</span>).join(<span class="str">''</span>)
+
+  <span class="kw">return</span> (
+    <span class="tag">&lt;div&gt;</span>
+      <span class="tag">&lt;input</span>
+        <span class="attr">placeholder</span>=<span class="val">"First Name"</span>
+        <span class="attr">value</span>={firstName}
+        <span class="attr">onChange</span>={(e) =&gt; setFirstName(e.target.value)}
+      <span class="tag">/&gt;</span>
+      <span class="tag">&lt;input</span>
+        <span class="attr">placeholder</span>=<span class="val">"Middle Name (optional)"</span>
+        <span class="attr">value</span>={middleName}
+        <span class="attr">onChange</span>={(e) =&gt; setMiddleName(e.target.value)}
+      <span class="tag">/&gt;</span>
+      <span class="tag">&lt;input</span>
+        <span class="attr">placeholder</span>=<span class="val">"Last Name"</span>
+        <span class="attr">value</span>={lastName}
+        <span class="attr">onChange</span>={(e) =&gt; setLastName(e.target.value)}
+      <span class="tag">/&gt;</span>
+      <span class="tag">&lt;button</span> <span class="attr">onClick</span>={() =&gt; setSubmitted(<span class="kw">true</span>)}<span class="tag">&gt;</span>
+        Show Full Name
+      <span class="tag">&lt;/button&gt;</span>
+
+      {submitted &amp;&amp; (
+        <span class="tag">&lt;div&gt;</span>
+          <span class="tag">&lt;p&gt;</span>Full Name: <strong>{fullName}</strong><span class="tag">&lt;/p&gt;</span>
+          <span class="tag">&lt;p&gt;</span>Initials: <strong>{initials}</strong><span class="tag">&lt;/p&gt;</span>
+        <span class="tag">&lt;/div&gt;</span>
+      )}
+    <span class="tag">&lt;/div&gt;</span>
+  )
+}
+
+<span class="kw">export default</span> FullNameApp</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num green">4</div>
+      <div class="step-body">
+        <h4>See the app in action</h4>
+        <p>Enter a name and click <strong>Show Full Name</strong> — the result appears below with full name and initials:</p>
+        <div class="screenshot-wrap">
+          <div class="screenshot-label">Workshop 2 — Full Name App (empty state)</div>
+          <img src="screenshots/ws2-full-name.png" alt="Workshop 2 empty state" />
+        </div>
+        <div class="screenshot-wrap" style="margin-top:16px">
+          <div class="screenshot-label">Workshop 2 — After clicking "Show Full Name" with Vijay Kumar Reddy</div>
+          <img src="screenshots/ws2-full-name-result.png" alt="Workshop 2 result state" />
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /steps -->
+
+  <table class="concepts-table">
+    <thead><tr><th>Concept</th><th>What it means</th></tr></thead>
+    <tbody>
+      <tr><td><code>useState</code></td><td>Declares a reactive variable — changing it triggers a re-render</td></tr>
+      <tr><td><code>onChange</code></td><td>Fires on every keystroke; keeps React state in sync with the input</td></tr>
+      <tr><td>Two-way binding</td><td>State drives the input value AND the input updates state on change</td></tr>
+      <tr><td><code>e.target.value</code></td><td>The current text the user typed in an input field</td></tr>
+      <tr><td>Conditional render</td><td><code>{condition &amp;&amp; &lt;JSX /&gt;}</code> — renders only when condition is truthy</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warning-box">
+    <div class="label">⚠️ Common Mistake</div>
+    <p>Always use the setter function (<code>setFirstName('...')</code>) to update state. Never write <code>firstName = 'John'</code> directly — this does NOT trigger a re-render.</p>
+  </div>
+
+  <div class="assignment">
+    <div class="label">📝 Assignment — Workshop 2</div>
+    <h4>Extend the Full Name App</h4>
+    <ul>
+      <li>Add a Middle Name input field (already included above)</li>
+      <li>Display the initials alongside the full name (e.g. <code>V.K.R.</code>)</li>
+      <li>Add a Reset button that clears all fields and hides the result</li>
+    </ul>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- WORKSHOP 3 -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="section-heading">
+    <div class="ws-badge ws3">W3</div>
+    <div>
+      <h2>Workshop 3 — Calculator App</h2>
+      <div class="subtitle">Input validation, edge cases, parseFloat, and conditional rendering</div>
+    </div>
+  </div>
+
+  <div class="steps">
+
+    <div class="step">
+      <div class="step-num purple">1</div>
+      <div class="step-body">
+        <h4>Create the project</h4>
+        <div class="code-block">
+          <div class="code-header"><div class="dots"><span class="r"></span><span class="y"></span><span class="g"></span></div><span class="filename">Terminal</span></div>
+          <pre>npm create vite@latest workshop3-calculator -- --template react
+cd workshop3-calculator
+npm install
+npm run dev</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num purple">2</div>
+      <div class="step-body">
+        <h4>Key concept — HTML inputs always return strings</h4>
+        <div class="concept-box">
+          <div class="label">💡 Important</div>
+          <p>Even <code>type="number"</code> inputs give you a <strong>string</strong>. You must convert with <code>parseFloat()</code> before doing arithmetic — otherwise <code>"5" + "3"</code> = <code>"53"</code> instead of <code>8</code>.</p>
+        </div>
+        <div class="code-block">
+          <div class="code-header"><div class="dots"><span class="r"></span><span class="y"></span><span class="g"></span></div><span class="filename">Type conversion</span></div>
+          <pre><span class="kw">const</span> a = <span class="fn">parseFloat</span>(num1)  <span class="cm">// "15" → 15</span>
+<span class="kw">const</span> b = <span class="fn">parseFloat</span>(num2)  <span class="cm">// "7"  → 7</span>
+
+<span class="kw">if</span> (<span class="fn">isNaN</span>(a) || <span class="fn">isNaN</span>(b)) {
+  setError(<span class="str">'Please enter valid numbers'</span>)
+  <span class="kw">return</span>
+}
+<span class="kw">if</span> (operation === <span class="str">'divide'</span> &amp;&amp; b === 0) {
+  setError(<span class="str">'Cannot divide by zero'</span>)
+  <span class="kw">return</span>
+}</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num purple">3</div>
+      <div class="step-body">
+        <h4>Create <code>Calculator.jsx</code></h4>
+        <p>Create <code>src/components/Calculator.jsx</code> with state for both numbers, the chosen operation, result, and error message.</p>
+        <div class="code-block">
+          <div class="code-header"><div class="dots"><span class="r"></span><span class="y"></span><span class="g"></span></div><span class="filename">src/components/Calculator.jsx (key logic)</span></div>
+          <pre><span class="kw">import</span> { useState } <span class="kw">from</span> <span class="str">'react'</span>
+
+<span class="kw">function</span> <span class="fn">Calculator</span>() {
+  <span class="kw">const</span> [num1, setNum1]           = <span class="fn">useState</span>(<span class="str">''</span>)
+  <span class="kw">const</span> [num2, setNum2]           = <span class="fn">useState</span>(<span class="str">''</span>)
+  <span class="kw">const</span> [operation, setOperation] = <span class="fn">useState</span>(<span class="str">'add'</span>)
+  <span class="kw">const</span> [result, setResult]       = <span class="fn">useState</span>(<span class="kw">null</span>)
+  <span class="kw">const</span> [error, setError]         = <span class="fn">useState</span>(<span class="str">''</span>)
+
+  <span class="kw">const</span> handleCalculate = () =&gt; {
+    <span class="kw">const</span> a = <span class="fn">parseFloat</span>(num1)
+    <span class="kw">const</span> b = <span class="fn">parseFloat</span>(num2)
+
+    <span class="kw">if</span> (<span class="fn">isNaN</span>(a) || <span class="fn">isNaN</span>(b)) {
+      <span class="fn">setError</span>(<span class="str">'Enter valid numbers in both fields.'</span>)
+      <span class="kw">return</span>
+    }
+    <span class="kw">if</span> (operation === <span class="str">'divide'</span> &amp;&amp; b === 0) {
+      <span class="fn">setError</span>(<span class="str">'Cannot divide by zero.'</span>)
+      <span class="kw">return</span>
+    }
+
+    <span class="fn">setError</span>(<span class="str">''</span>)
+    <span class="kw">const</span> ops = {
+      add: a + b,  subtract: a - b,
+      multiply: a * b,  divide: a / b,  modulus: a % b
+    }
+    <span class="fn">setResult</span>(ops[operation])
+  }
+
+  <span class="kw">return</span> (
+    <span class="tag">&lt;div&gt;</span>
+      <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"number"</span> <span class="attr">value</span>={num1} <span class="attr">onChange</span>={(e) =&gt; setNum1(e.target.value)} <span class="tag">/&gt;</span>
+      <span class="tag">&lt;select</span> <span class="attr">value</span>={operation} <span class="attr">onChange</span>={(e) =&gt; setOperation(e.target.value)}<span class="tag">&gt;</span>
+        <span class="tag">&lt;option</span> <span class="attr">value</span>=<span class="val">"add"</span><span class="tag">&gt;</span>+<span class="tag">&lt;/option&gt;</span>
+        <span class="tag">&lt;option</span> <span class="attr">value</span>=<span class="val">"subtract"</span><span class="tag">&gt;</span>−<span class="tag">&lt;/option&gt;</span>
+        <span class="tag">&lt;option</span> <span class="attr">value</span>=<span class="val">"multiply"</span><span class="tag">&gt;</span>×<span class="tag">&lt;/option&gt;</span>
+        <span class="tag">&lt;option</span> <span class="attr">value</span>=<span class="val">"divide"</span><span class="tag">&gt;</span>÷<span class="tag">&lt;/option&gt;</span>
+        <span class="tag">&lt;option</span> <span class="attr">value</span>=<span class="val">"modulus"</span><span class="tag">&gt;</span>%<span class="tag">&lt;/option&gt;</span>
+      <span class="tag">&lt;/select&gt;</span>
+      <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"number"</span> <span class="attr">value</span>={num2} <span class="attr">onChange</span>={(e) =&gt; setNum2(e.target.value)} <span class="tag">/&gt;</span>
+      <span class="tag">&lt;button</span> <span class="attr">onClick</span>={handleCalculate}<span class="tag">&gt;</span>Calculate<span class="tag">&lt;/button&gt;</span>
+
+      {error &amp;&amp; <span class="tag">&lt;p</span> <span class="attr">style</span>={{color:<span class="str">'red'</span>}}<span class="tag">&gt;</span>{error}<span class="tag">&lt;/p&gt;</span>}
+      {result !== <span class="kw">null</span> &amp;&amp; <span class="tag">&lt;p&gt;</span>Result: {result}<span class="tag">&lt;/p&gt;</span>}
+    <span class="tag">&lt;/div&gt;</span>
+  )
+}
+
+<span class="kw">export default</span> Calculator</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num purple">4</div>
+      <div class="step-body">
+        <h4>See the app — normal result and error state</h4>
+        <div class="screenshot-wrap">
+          <div class="screenshot-label">Workshop 3 — Calculator (ready state)</div>
+          <img src="screenshots/ws3-calculator.png" alt="Workshop 3 default" />
+        </div>
+        <div class="screenshot-wrap" style="margin-top:16px">
+          <div class="screenshot-label">Workshop 3 — 15 + 7 = 22 (result state)</div>
+          <img src="screenshots/ws3-calculator-result.png" alt="Workshop 3 result" />
+        </div>
+        <div class="screenshot-wrap" style="margin-top:16px">
+          <div class="screenshot-label">Workshop 3 — Divide by zero (error state)</div>
+          <img src="screenshots/ws3-calculator-error.png" alt="Workshop 3 error" />
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /steps -->
+
+  <table class="concepts-table">
+    <thead><tr><th>Concept</th><th>What it means</th></tr></thead>
+    <tbody>
+      <tr><td><code>parseFloat()</code></td><td>Converts a string to a decimal number — always use before arithmetic</td></tr>
+      <tr><td><code>isNaN()</code></td><td>Returns <code>true</code> if the value is Not a Number — use to validate inputs</td></tr>
+      <tr><td>Edge cases</td><td>Divide by zero, empty input — always handle before calculating</td></tr>
+      <tr><td>Conditional rendering</td><td><code>{error &amp;&amp; &lt;p&gt;}</code> renders only when <code>error</code> is a non-empty string</td></tr>
+      <tr><td>Controlled <code>&lt;select&gt;</code></td><td>Works exactly like a text input — bind <code>value</code> and <code>onChange</code> to state</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warning-box">
+    <div class="label">⚠️ Common Mistake</div>
+    <p>HTML inputs always return strings, even for <code>type="number"</code>. Always convert with <code>parseFloat()</code> or <code>parseInt()</code> before doing math.</p>
+  </div>
+
+  <div class="assignment">
+    <div class="label">📝 Assignment — Workshop 3</div>
+    <h4>Extend the Calculator</h4>
+    <ul>
+      <li>Add percentage (<code>%</code>) and modulus (<code>mod</code>) operations ✅ already done above</li>
+      <li>Show the full calculation expression (e.g. <code>10 + 5 = 15</code>) in the result area</li>
+      <li>Add a Clear button that resets all fields, result, and error</li>
+    </ul>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- END OF DAY SUMMARY -->
+  <div style="background:white;border-radius:14px;padding:36px;box-shadow:0 2px 12px rgba(0,0,0,0.07);margin-bottom:40px;">
+    <h2 style="color:var(--navy);margin-bottom:20px;">End of Day 1 — What you learned</h2>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;">
+      <div style="padding:18px;background:var(--gray-bg);border-radius:10px;border-top:3px solid var(--navy);">
+        <div style="font-weight:700;margin-bottom:8px;color:var(--navy)">Workshop 1</div>
+        <ul style="list-style:none;font-size:0.88rem;color:#4a5568;">
+          <li>✅ Vite project setup</li>
+          <li>✅ JSX syntax rules</li>
+          <li>✅ Creating components</li>
+          <li>✅ Passing props</li>
+          <li>✅ export default</li>
+        </ul>
+      </div>
+      <div style="padding:18px;background:var(--gray-bg);border-radius:10px;border-top:3px solid var(--green);">
+        <div style="font-weight:700;margin-bottom:8px;color:var(--green)">Workshop 2</div>
+        <ul style="list-style:none;font-size:0.88rem;color:#4a5568;">
+          <li>✅ useState hook</li>
+          <li>✅ Controlled inputs</li>
+          <li>✅ onChange events</li>
+          <li>✅ Conditional rendering</li>
+          <li>✅ e.target.value</li>
+        </ul>
+      </div>
+      <div style="padding:18px;background:var(--gray-bg);border-radius:10px;border-top:3px solid var(--purple);">
+        <div style="font-weight:700;margin-bottom:8px;color:var(--purple)">Workshop 3</div>
+        <ul style="list-style:none;font-size:0.88rem;color:#4a5568;">
+          <li>✅ parseFloat / parseInt</li>
+          <li>✅ isNaN validation</li>
+          <li>✅ Edge case handling</li>
+          <li>✅ Controlled &lt;select&gt;</li>
+          <li>✅ Error state pattern</li>
+        </ul>
+      </div>
+    </div>
+    <div style="margin-top:24px;padding:16px 20px;background:#e8f0fe;border-radius:8px;color:var(--navy);font-size:0.95rem;">
+      <strong>Coming up on Day 2:</strong> useEffect, Axios, REST APIs, FastAPI CRUD integration — connect your React app to a real backend running on port 8011.
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<footer>
+  <strong>Actoryx Technologies Private Limited</strong><br />
+  React Intern Training Program — Day 1 Guide &nbsp;|&nbsp; Version 2.0 &nbsp;|&nbsp; May 2026
+</footer>
+
+</body>
+</html>
