@@ -6,7 +6,7 @@ import httpx
 import pandas as pd
 import streamlit as st
 
-API = "http://127.0.0.1:8000"
+API = "https://day3-wed-ui.fastapicloud.dev"
 st.set_page_config(page_title="TR-MAIN dashboard", page_icon="📈", layout="wide")
 st.title("📈 Campus substation — TR-MAIN (630 kVA) and rooftop solar (500 kWp)")
 
