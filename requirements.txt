@@ -1,0 +1,5 @@
+streamlit
+httpx
+fastapi
+uvicorn
+sqlalchemy
